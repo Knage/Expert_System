@@ -45,7 +45,7 @@ function syntax_check($filename)
 		  $ischar = 0;
 		  for ($i = 0; $i != count($test); $i++)
 		  {
-			while ($test[$i] == " ")
+			while ($test[$i] == " " || $test[$i] == "(" && $ischar == 0 || $test[$i] == ")" && $ischar == 1)
 			 $i++;
 			if ($ischar == 0)
 			{
