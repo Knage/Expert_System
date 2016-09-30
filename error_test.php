@@ -1,7 +1,7 @@
 <?php
-
 function syntax_check($filename)
 {
+	$bracket = 0;
 	$myfile = fopen($filename, "r");
 	while(!feof($myfile))
 	{
@@ -9,9 +9,9 @@ function syntax_check($filename)
 	  $line = trim($array[0]);
 	  if (strlen($line) == 0)
 	  {}
-	  elseif (substr($line, 0, 1) == "=")
+	  else if ($line[0] == "=")
 	  {
-		  $test = str_split($line);
+		       $test = str_split($line);
 		  foreach ($test as $value) {
 				if ($value == "=")
 				{}
@@ -46,7 +46,16 @@ function syntax_check($filename)
 		  for ($i = 0; $i != count($test); $i++)
 		  {
 			while ($test[$i] == " " || $test[$i] == "(" && $ischar == 0 || $test[$i] == ")" && $ischar == 1)
-			 $i++;
+			{
+				if ($test[$i] == "(")
+					$bracket++;
+				else if ($test[$i] == ")")
+					$bracket--;
+				if ($bracket < 0)
+					return (false);
+				$i++;
+			}
+
 			if ($ischar == 0)
 			{
 				if ($test[$i] == "!")
@@ -91,6 +100,8 @@ function syntax_check($filename)
 		  $GLOBALS['rules'][] = $line;
 	  }
 	}
+	if ($bracket != 0)
+		return (false);
 	fclose($myfile);
 	return (true);
 }

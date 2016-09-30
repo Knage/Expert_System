@@ -49,7 +49,7 @@
 			algo();
 		}
 		else {
-			echo "false";
+			echo "Error: Syntax Error" . PHP_EOL;
 		}
 	}
 	else
