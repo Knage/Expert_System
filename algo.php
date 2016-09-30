@@ -1,15 +1,15 @@
 <?php
-	function and_op($command)
+function and_op($command)
+{
+	$command = preg_replace('/\s+/', '', $command);
+	$coms = explode("+", $command);
+	foreach ($coms as $char)
 	{
-		$command = preg_replace('/\s+/', '', $command);
-		$coms = explode("+", $command);
-		foreach ($coms as $char)
+		if (substr($char, 0, 1) == "!")
 		{
-				if (substr($char, 0, 1) == "!")
-				{
-					$char = substr($char, 1, 2);
-					if ($GLOBALS['alpha'][$char] != 0)
-						return (0);
+			$char = substr($char, 1, 2);
+			if ($GLOBALS['alpha'][$char] != 0)
+				return (0);
 				}
 				else if ($char == '0')
 					return (0);
@@ -58,10 +58,10 @@
 		{
 			if (strpos($commands[1],"|"))
 			{
-				
+
 			}
 			else {
- 				$commands[1] = preg_replace('/\s+/', '', $commands[1]);
+				$commands[1] = preg_replace('/\s+/', '', $commands[1]);
 				$coms = explode("+", $commands[1]);
 				foreach ($coms as $value)
 				{
@@ -75,7 +75,7 @@
 								$GLOBALS['alpha'][$value] = 0;
 							else
 								$GLOBALS['alpha'][$value] = 1;
-								echo "here";
+							echo "here";
 						}
 						else
 						{
@@ -99,11 +99,22 @@
 		}
 	}
 
+	function solve($value)
+	{
+			echo "!!!!"  . strpos($commands[0],"(");
+			if (strpos($commands[1],"("))
+			{
+				echo "Helloooooooooooooooooooooooooooooooooooo!";
+				echo strpos($commands[1],"(") . ":" . strpos($commands[1],"(") . PHP_EOL;
+		}
+		echo "implies return " . implies($value) . PHP_EOL;
+	}
+
 	function algo() {
 		foreach ($GLOBALS['rules'] as $value) {
 			echo $value . PHP_EOL;
 			//brackets
-			echo "implies return " . implies($value) . PHP_EOL;
+			solve($value);
 			var_dump($GLOBALS['alpha']);
 		}
 	}
