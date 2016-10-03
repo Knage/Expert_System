@@ -90,9 +90,9 @@ function algo()
 {
 	foreach ($GLOBALS['rules'] as $value) {
 		echo $value . PHP_EOL;
-		//brackets
 		solve($value);
-		var_dump($GLOBALS['alpha']);
+		echo "Hellooooo";
+		echo strpos($value,"5");
 	}
 }
 ?>
