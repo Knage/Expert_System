@@ -10,12 +10,14 @@ function and_op($command)
 			$char = substr($char, 1, 2);
 			if ($GLOBALS['alpha'][$char] != 0)
 				return (0);
-				}
-				else if ($char == '0')
-					return (0);
-				else if ($GLOBALS['alpha'][$char] == 0)
-					return (0);
 		}
+		else if ($char == '0')
+			return (0);
+		else if ($char == 1)
+			return (1);
+		else if ($GLOBALS['alpha'][$char] == 0)
+			return (0);
+	}
 		return (1);
 }
 
@@ -80,19 +82,23 @@ function solve($value)
 		$com[0] = "";
 		$ret = solve($com);
 		$replace = substr($commands[0], strpos($commands[0],"("), strpos($commands[0],")") - strpos($commands[0],"(") + 1);
-		echo str_replace($replace, $ret, $commands[0]) . PHP_EOL;
+		$commands[0] = str_replace($replace, $ret, $commands[0]);
+		$value = $commands[0] . $commands[1];
 	}
-	echo "implies return " . implies($value) . PHP_EOL;
 	return (implies($value));
+}
+
+function find_fact($letter)
+{
+		
 }
 
 function algo()
 {
-	foreach ($GLOBALS['rules'] as $value) {
+	foreach ($GLOBALS['rules'] as $value)
+	{
 		echo $value . PHP_EOL;
 		solve($value);
-		echo "Hellooooo";
-		echo strpos($value,"5");
 	}
 }
 ?>
