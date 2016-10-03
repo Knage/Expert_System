@@ -34,7 +34,7 @@
 
 	require('error_test.php');
 	require('algo.php');
-	if (isset($argv[1]))
+	if (count($argv) == 2)
 	{
 		if(syntax_check($argv[1]))
 		{
@@ -53,5 +53,5 @@
 		}
 	}
 	else
-		echo "Error: No file given as argument" . PHP_EOL;
+		echo "Error: Incorrect number of arguments" . PHP_EOL;
 ?>
