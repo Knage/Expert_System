@@ -5,20 +5,20 @@ function and_op($command)
 	$coms = explode("+", $command);
 	foreach ($coms as $char)
 	{
+		if (ctype_alpha($char))
+			$char = find_fact($char);
 		if (substr($char, 0, 1) == "!")
 		{
 			$char = substr($char, 1, 2);
-			if ($GLOBALS['alpha'][$char] != 0)
+			if (ctype_alpha($char))
+				$char = find_fact($char);
+			if ($char == 1)
 				return (0);
 		}
 		else if ($char == '0')
 			return (0);
-		else if ($char == 1)
-			return (1);
-		else if ($GLOBALS['alpha'][$char] == 0)
-			return (0);
 	}
-		return (1);
+	return (1);
 }
 
 function or_op($command)
@@ -56,24 +56,24 @@ function implies($value)
  	$commands = explode("=>", $value);
 	$coms = explode("^", $commands[0]);
 	$ret = xor_op($coms);
-	if (!strpos($commands[1],"(") && !strpos($commands[1],"^"))
-	{
-		if (strpos($commands[1],"|"))
-		{
-		}
-		else
-		{
-		}
-	}
-	else
-	{
-		echo "Error: Syntax Error" . PHP_EOL;
-		exit(0);
-	}
 	return ($ret);
 }
 
-function solve($value)
+function ifandonlyif($value, $let)
+{
+	$commands = explode("<=>", $value);
+	$coms = explode("^", $commands[0]);
+	$out1 = xor_op($coms);
+	$commands[1] = str_replace($let, $GLOBALS['alpha'][$let], $commands[1]);
+	$coms = explode("^", $commands[1]);
+	$out2 = xor_op($coms);
+	if ($out1 == $out2)
+		return (1);
+	else
+		return (0);
+}
+
+function solve($value, $let)
 {
   	$commands = explode(">", $value);
 	if (strpos($commands[0],"("))
@@ -85,20 +85,47 @@ function solve($value)
 		$commands[0] = str_replace($replace, $ret, $commands[0]);
 		$value = $commands[0] . $commands[1];
 	}
-	return (implies($value));
+	if (strpos($value, "<=>") !== false)
+		return (ifandonlyif($value, $let));
+	else
+		return (implies($value));
+	return (0);
 }
 
 function find_fact($letter)
 {
-		
+	foreach ($GLOBALS['rules'] as $value)
+	{
+		if (strpos($value, $letter) !== false)
+		{
+			$com = str_split($value);
+			$i = count($com) - 1;
+			while ($com[$i] != ">")
+			{
+				if ($com[$i] == $letter)
+					return (solve($value, $letter));
+				$i--;
+			}
+
+		}
+	}
+	return($GLOBALS['alpha'][$letter]);
 }
 
 function algo()
 {
-	foreach ($GLOBALS['rules'] as $value)
+	$GLOBALS['query'] = substr($GLOBALS['query'], 1);
+	$query = str_split($GLOBALS['query']);
+	foreach ($query as $let)
 	{
-		echo $value . PHP_EOL;
-		solve($value);
+		if (find_fact($let))
+		{
+			echo "$let is true" . PHP_EOL;
+		}
+		else
+		{
+			echo "$let is false" . PHP_EOL;
+		}
 	}
 }
 ?>

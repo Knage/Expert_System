@@ -97,6 +97,9 @@ function syntax_check($filename)
 				$ischar = 0;
 			}
 		  }
+		  $commands = explode("=>", $line);
+	  	  if (strpos($commands[1],"(") !== false && strpos($commands[1],"^") !== false)
+	  		return (false);
 		  $GLOBALS['rules'][] = $line;
 	  }
 	}
