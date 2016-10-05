@@ -51,6 +51,17 @@ function xor_op($coms)
 		return (xor_op($new));
 }
 
+function change_alpha($command)
+{
+	$coms = str_split($command);
+	foreach ($coms as $char)
+	{
+		if (ctype_alpha($char))
+			$command = str_replace($char, $GLOBALS['alpha'][$char], $command);
+	}
+	return ($command);
+}
+
 function implies($value)
 {
  	$commands = explode("=>", $value);
@@ -64,9 +75,10 @@ function ifandonlyif($value, $let)
 	$commands = explode("<=>", $value);
 	$coms = explode("^", $commands[0]);
 	$out1 = xor_op($coms);
-	$commands[1] = str_replace($let, $GLOBALS['alpha'][$let], $commands[1]);
+	$commands[1] = change_alpha($commands[1]);
 	$coms = explode("^", $commands[1]);
 	$out2 = xor_op($coms);
+	echo "$out1 == $out2\n";
 	if ($out1 == $out2)
 		return (1);
 	else
@@ -94,6 +106,12 @@ function solve($value, $let)
 
 function find_fact($letter)
 {
+	$GLOBALS['alpha'][$loop]++;
+	if ($GLOBALS['alpha'][$loop] > count($GLOBALS['rules']))
+	{
+		echo "Error: There is a contradiction in the facts\n";
+		exit(0);
+	}
 	foreach ($GLOBALS['rules'] as $value)
 	{
 		if (strpos($value, $letter) !== false)
@@ -118,6 +136,7 @@ function algo()
 	$query = str_split($GLOBALS['query']);
 	foreach ($query as $let)
 	{
+		$GLOBALS['alpha'][$loop] = 0;
 		if (find_fact($let))
 		{
 			echo "$let is true" . PHP_EOL;

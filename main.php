@@ -31,16 +31,28 @@
 			'Y' => 0,
 			'Z' => 0,
 	);
+	$loop = 0;
 
 	require('error_test.php');
 	require('algo.php');
+
+	function iscontridicting()
+	{
+		$letters = array();
+		foreach ($GLOBALS['rules'] as $line)
+		{
+
+		}
+	}
+
 	if (count($argv) == 2)
 	{
 		if(syntax_check($argv[1]))
 		{
 			$ifacts = trim(preg_replace('/\s+/', '', $ifacts));
 			$test = str_split($ifacts);
-			foreach ($test as $value) {
+			foreach ($test as $value)
+			{
 				if ($value != "=")
 				{
 					$alpha[$value] = 1;
@@ -48,7 +60,8 @@
 			}
 			algo();
 		}
-		else {
+		else
+		{
 			echo "Error: Syntax Error" . PHP_EOL;
 		}
 	}
